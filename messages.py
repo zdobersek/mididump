@@ -15,7 +15,7 @@
 
 
 class MIDIMessage:
-    _message_length = None
+    length = 3
 
     def __init__(self, data):
         self._data = data
@@ -69,6 +69,8 @@ class MIDIControlModeChangeMessage(MIDIMessage):
 
 
 class MIDIProgramChangeMessage(MIDIMessage):
+    length = 2
+
     def _check(self):
         assert self._data[1] >> 7 is 0, "Invalid data byte #1"
 
@@ -78,6 +80,8 @@ class MIDIProgramChangeMessage(MIDIMessage):
 
 
 class MIDIChannelAftertouchMessage(MIDIMessage):
+    length = 2
+
     def _check(self):
         assert self._data[1] >> 7 is 0, "Invalid data byte #1"
 
@@ -121,6 +125,8 @@ class MIDISongPositionPointerMessage(MIDIMessage):
 
 
 class MIDISongSelectMessage(MIDIMessage):
+    length = 2
+
     def _check(self):
         assert self._data[1] >> 7 is 0, "Invalid data byte #1"
 
@@ -135,41 +141,57 @@ class MIDIUndefinedMessage(MIDIMessage):
 
 
 class MIDITuneRequestMessage(MIDIMessage):
+    length = 1
+
     def __str__(self):
         return "Tune Request"
 
 
 class MIDIEndOfSystemExclusiveMessage(MIDIMessage):
+    length = 1
+
     def __str__(self):
         return "End Of System Exclusive"
 
 
 class MIDITimingClockMessage(MIDIMessage):
+    length = 1
+
     def __str__(self):
         return "Timing Clock"
 
 
 class MIDIStartMessage(MIDIMessage):
+    length = 1
+
     def __str__(self):
         return "Start"
 
 
 class MIDIContinueMessage(MIDIMessage):
+    length = 1
+
     def __str__(self):
         return "Continue"
 
 
 class MIDIStopMessage(MIDIMessage):
+    length = 1
+
     def __str__(self):
         return "Stop"
 
 
 class MIDIActiveSensingMessage(MIDIMessage):
+    length = 1
+
     def __str__(self):
         return "Active Sensing"
 
 
 class MIDISystemResetMessage(MIDIMessage):
+    length = 1
+
     def __str__(self):
         return "MIDISystemResetMessage"
 
@@ -214,6 +236,6 @@ class MessageDecoder:
         if type(result) is dict:
             assert second_quartet in result, "Unknown message based on second quartet of the status byte (`%s` = `%s`, first quartet `%s`)" \
                                              % (bin(second_quartet), hex(first_quartet), bin(second_quartet), hex(second_quartet))
-            return result[second_quartet](buf[:3])
+            return result[second_quartet](buf[:result.length])
 
-        return result(buf[:3])
+        return result(buf[:result.length])

@@ -43,7 +43,7 @@ class MIDIPoll:
                             print "Error while decoding message:", str(e)
                             print "Complete message data:", ','.join([hex(ord(b)) for b in data])
 
-                        buf = buf[3:]
+                        buf = buf[message.length:]
                         print "Message:", str(message)
             except KeyboardInterrupt:
                 print
