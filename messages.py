@@ -15,70 +15,70 @@ class MIDIMessage:
 
 class MIDINoteOffMessage(MIDIMessage):
     def _check(self):
-        assert ord(self._data[1]) >> 7 is 0, "Invalid data byte #1"
-        assert ord(self._data[2]) >> 7 is 0, "Invalid data byte #2"
+        assert self._data[1] >> 7 is 0, "Invalid data byte #1"
+        assert self._data[2] >> 7 is 0, "Invalid data byte #2"
 
     def __str__(self):
         return "Note Off - channel %d - note number %d - note velocity %d" \
-               % (ord(self._data[0]) & 0xf + 1, ord(self._data[1]) & 0x7f, ord(self._data[2]) & 0x7f)
+               % (self._data[0] & 0xf + 1, self._data[1] & 0x7f, self._data[2] & 0x7f)
 
 
 class MIDINoteOnMessage(MIDIMessage):
     def _check(self):
-        assert ord(self._data[1]) >> 7 is 0, "Invalid data byte #1"
-        assert ord(self._data[2]) >> 7 is 0, "Invalid data byte #2"
+        assert self._data[1] >> 7 is 0, "Invalid data byte #1"
+        assert self._data[2] >> 7 is 0, "Invalid data byte #2"
 
     def __str__(self):
         return "Note On - channel %d - note number %d - note velocity %d" \
-               % (ord(self._data[0]) & 0xf + 1, ord(self._data[1]) & 0x7f, ord(self._data[2]) & 0x7f)
+               % (self._data[0] & 0xf + 1, self._data[1] & 0x7f, self._data[2] & 0x7f)
 
 
 class MIDIPolyphonicAftertouchMessage(MIDIMessage):
     def _check(self):
-        assert ord(self._data[1]) >> 7 is 0, "Invalid data byte #1"
-        assert ord(self._data[2]) >> 7 is 0, "Invalid data byte #2"
+        assert self._data[1] >> 7 is 0, "Invalid data byte #1"
+        assert self._data[2] >> 7 is 0, "Invalid data byte #2"
 
     def __str__(self):
         return "Polyphonic Aftertouch - channel %d - note number %d - pressure %d" \
-               % (ord(self._data[0]) & 0xf + 1, ord(self._data[1]) & 0x7f, ord(self._data[2]) & 0x7f)
+               % (self._data[0] & 0xf + 1, self._data[1] & 0x7f, self._data[2] & 0x7f)
 
 
 class MIDIControlModeChangeMessage(MIDIMessage):
     def _check(self):
-        assert ord(self._data[1]) >> 7 is 0, "Invalid data byte #1"
-        assert ord(self._data[2]) >> 7 is 0, "Invalid data byte #2"
+        assert self._data[1] >> 7 is 0, "Invalid data byte #1"
+        assert self._data[2] >> 7 is 0, "Invalid data byte #2"
 
     def __str__(self):
         return "Control/Mode Change - channel %d - controller number %d - controller value %d" \
-               % (ord(self._data[0]) & 0xf + 1, ord(self._data[1]) & 0x7f, ord(self._data[2]) & 0x7f)
+               % (self._data[0] & 0xf + 1, self._data[1] & 0x7f, self._data[2] & 0x7f)
 
 
 class MIDIProgramChangeMessage(MIDIMessage):
     def _check(self):
-        assert ord(self._data[1]) >> 7 is 0, "Invalid data byte #1"
+        assert self._data[1] >> 7 is 0, "Invalid data byte #1"
 
     def __str__(self):
         return "Program Change - channel %d - program number %d" \
-                % (ord(self._data[0]) & 0xf + 1, ord(self._data[1] & 0x7f))
+                % (self._data[0] & 0xf + 1, ord(self._data[1] & 0x7f))
 
 
 class MIDIChannelAftertouchMessage(MIDIMessage):
     def _check(self):
-        assert ord(self._data[1]) >> 7 is 0, "Invalid data byte #1"
+        assert self._data[1] >> 7 is 0, "Invalid data byte #1"
 
     def __str__(self):
         return "Channel Aftertouch - channel %d - pressure value %d" \
-               % (ord(self._data[0]) & 0xf + 1, ord(self._data[1] & 0x7f))
+               % (self._data[0] & 0xf + 1, ord(self._data[1] & 0x7f))
 
 
 class MIDIPitchWheelControlMessage(MIDIMessage):
     def _check(self):
-        assert ord(self._data[1]) >> 7 is 0, "Invalid data byte #1"
-        assert ord(self._data[2]) >> 7 is 0, "Invalid data byte #2"
+        assert self._data[1] >> 7 is 0, "Invalid data byte #1"
+        assert self._data[2] >> 7 is 0, "Invalid data byte #2"
 
     def __str__(self):
         return "Pitch Wheel Control - channel %d - LSB %d - MSB %d" \
-               % (ord(self._data[0]) & 0xf + 1, ord(self._data[1]) & 0x7f, ord(self._data[2]) & 0x7f)
+               % (self._data[0] & 0xf + 1, self._data[1] & 0x7f, self._data[2] & 0x7f)
 
 
 class MIDISystemExclusiveMessage(MIDIMessage):
@@ -88,26 +88,26 @@ class MIDISystemExclusiveMessage(MIDIMessage):
 
 class MIDITimeCodeQuarterFrameMessage(MIDIMessage):
     def _check(self):
-        assert ord(self._data[1]) >> 7 is 0, "Invalid data byte #1"
+        assert self._data[1] >> 7 is 0, "Invalid data byte #1"
 
     def __str__(self):
         return "Time Code Quarter Frame - message type %d - values %d" \
-               % ((ord(self._data[1]) & 0x70) >> 4, ord(self._data[1]) & 0xf)
+               % ((self._data[1] & 0x70) >> 4, self._data[1] & 0xf)
 
 
 class MIDISongPositionPointerMessage(MIDIMessage):
     def _check(self):
-        assert ord(self._data[1]) >> 7 is 0, "Invalid data byte #1"
-        assert ord(self._data[2]) >> 7 is 0, "Invalid data byte #2"
+        assert self._data[1] >> 7 is 0, "Invalid data byte #1"
+        assert self._data[2] >> 7 is 0, "Invalid data byte #2"
 
     def __str__(self):
         return "Song Position Pointer - LSB %d - MSB %d" \
-               % (ord(self._data[1]) & 0x7f, ord(self._data[2]) & 0x7f)
+               % (self._data[1] & 0x7f, self._data[2] & 0x7f)
 
 
 class MIDISongSelectMessage(MIDIMessage):
     def _check(self):
-        assert ord(self._data[1]) >> 7 is 0, "Invalid data byte #1"
+        assert self._data[1] >> 7 is 0, "Invalid data byte #1"
 
     def __str__(self):
         return "Song Select - selected sequence/song %d" \
@@ -190,10 +190,8 @@ _messages_per_status_byte = {
 
 class MessageDecoder:
     @staticmethod
-    def get(data):
-        assert len(data) == 3, "Incorrect data length (expected `3`)"
-
-        status_byte = ord(data[0])
+    def get(buf):
+        status_byte = buf[0]
         first_quartet, second_quartet = status_byte >> 4, status_byte & 0x15
         assert first_quartet in _messages_per_status_byte.keys(), "Unknown message based on first quartet of the status byte (`%s` = `%s`)" \
                                                                   % (bin(first_quartet), hex(first_quartet))
@@ -201,6 +199,6 @@ class MessageDecoder:
         if type(result) is dict:
             assert second_quartet in result, "Unknown message based on second quartet of the status byte (`%s` = `%s`, first quartet `%s`)" \
                                              % (bin(second_quartet), hex(first_quartet), bin(second_quartet), hex(second_quartet))
-            return result[second_quartet](data)
+            return result[second_quartet](buf[:3])
 
-        return result(data)
+        return result(buf[:3])

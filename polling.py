@@ -13,19 +13,22 @@ class MIDIPoll:
         fd = os.open(self._file_path, os.O_RDONLY)
         self._poll.register(fd, select.POLLIN)
 
+        buf = bytearray()
+
         print "Starting polling device", self._file_path
         while True:
             try:
                 events = self._poll.poll()
                 for event in events:
                     if event[1] & select.POLLIN:
-                        data = os.read(fd, 8)
+                        buf.extend(os.read(fd, 8))
                         try:
-                            message = messages.MessageDecoder.get(data)
+                            message = messages.MessageDecoder.get(buf)
                         except AssertionError, e:
                             print "Error while decoding message:", str(e)
                             print "Complete message data:", ','.join([hex(ord(b)) for b in data])
 
+                        buf = buf[3:]
                         print "Message:", str(message)
             except KeyboardInterrupt:
                 print
