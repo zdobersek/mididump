@@ -15,7 +15,7 @@
 
 
 class MIDIMessage:
-    length = 3
+    LENGTH = 3
 
     def __init__(self, data):
         self._data = data
@@ -69,7 +69,7 @@ class MIDIControlModeChangeMessage(MIDIMessage):
 
 
 class MIDIProgramChangeMessage(MIDIMessage):
-    length = 2
+    LENGTH = 2
 
     def _check(self):
         assert self._data[1] >> 7 is 0, "Invalid data byte #1"
@@ -80,7 +80,7 @@ class MIDIProgramChangeMessage(MIDIMessage):
 
 
 class MIDIChannelAftertouchMessage(MIDIMessage):
-    length = 2
+    LENGTH = 2
 
     def _check(self):
         assert self._data[1] >> 7 is 0, "Invalid data byte #1"
@@ -125,7 +125,7 @@ class MIDISongPositionPointerMessage(MIDIMessage):
 
 
 class MIDISongSelectMessage(MIDIMessage):
-    length = 2
+    LENGTH = 2
 
     def _check(self):
         assert self._data[1] >> 7 is 0, "Invalid data byte #1"
@@ -141,56 +141,56 @@ class MIDIUndefinedMessage(MIDIMessage):
 
 
 class MIDITuneRequestMessage(MIDIMessage):
-    length = 1
+    LENGTH = 1
 
     def __str__(self):
         return "Tune Request"
 
 
 class MIDIEndOfSystemExclusiveMessage(MIDIMessage):
-    length = 1
+    LENGTH = 1
 
     def __str__(self):
         return "End Of System Exclusive"
 
 
 class MIDITimingClockMessage(MIDIMessage):
-    length = 1
+    LENGTH = 1
 
     def __str__(self):
         return "Timing Clock"
 
 
 class MIDIStartMessage(MIDIMessage):
-    length = 1
+    LENGTH = 1
 
     def __str__(self):
         return "Start"
 
 
 class MIDIContinueMessage(MIDIMessage):
-    length = 1
+    LENGTH = 1
 
     def __str__(self):
         return "Continue"
 
 
 class MIDIStopMessage(MIDIMessage):
-    length = 1
+    LENGTH = 1
 
     def __str__(self):
         return "Stop"
 
 
 class MIDIActiveSensingMessage(MIDIMessage):
-    length = 1
+    LENGTH = 1
 
     def __str__(self):
         return "Active Sensing"
 
 
 class MIDISystemResetMessage(MIDIMessage):
-    length = 1
+    LENGTH = 1
 
     def __str__(self):
         return "MIDISystemResetMessage"
@@ -236,6 +236,6 @@ class MessageDecoder:
         if type(entry) is dict:
             assert second_quartet in entry, "Unknown message based on second quartet of the status byte (`%s` = `%s`, first quartet `%s`)" \
                                              % (bin(second_quartet), hex(first_quartet), bin(second_quartet), hex(second_quartet))
-            return entry[second_quartet](buf[:entry.length])
+            return entry[second_quartet](buf[:entry.LENGTH])
 
-        return entry(buf[:entry.length])
+        return entry(buf[:entry.LENGTH])
