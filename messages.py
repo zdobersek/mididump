@@ -232,10 +232,10 @@ class MessageDecoder:
         first_quartet, second_quartet = status_byte >> 4, status_byte & 0x15
         assert first_quartet in _messages_per_status_byte.keys(), "Unknown message based on first quartet of the status byte (`%s` = `%s`)" \
                                                                   % (bin(first_quartet), hex(first_quartet))
-        result = _messages_per_status_byte[first_quartet]
-        if type(result) is dict:
-            assert second_quartet in result, "Unknown message based on second quartet of the status byte (`%s` = `%s`, first quartet `%s`)" \
+        entry = _messages_per_status_byte[first_quartet]
+        if type(entry) is dict:
+            assert second_quartet in entry, "Unknown message based on second quartet of the status byte (`%s` = `%s`, first quartet `%s`)" \
                                              % (bin(second_quartet), hex(first_quartet), bin(second_quartet), hex(second_quartet))
-            return result[second_quartet](buf[:result.length])
+            return entry[second_quartet](buf[:entry.length])
 
-        return result(buf[:result.length])
+        return entry(buf[:entry.length])
