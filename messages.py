@@ -64,7 +64,7 @@ class MIDIControlModeChangeMessage(MIDIMessage):
         assert self._data[2] >> 7 is 0, "Invalid data byte #2"
 
     def __str__(self):
-        return "Control/Mode Change - channel %d - controller number %d - controller value %d" \
+        return "Control/Mode Change - channel %d - control number %d - control value %d" \
                % (self._data[0] & 0xf + 1, self._data[1] & 0x7f, self._data[2] & 0x7f)
 
 
