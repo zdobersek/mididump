@@ -24,6 +24,19 @@ class MIDIPoll:
         self._file_path = file_path
         self._poll = select.poll()
 
+    def _decode_message(self, buf):
+        try:
+            message = messages.MessageDecoder.get(buf)
+        except IndexError, e:
+            # Hit when the buffer is empty.
+            return None
+        except AssertionError, e:
+            print "Error while decoding message:", str(e)
+            print "Complete buffer data:", ','.join([hex(ord(b)) for b in buf])
+            return None
+
+        return message
+
     def poll(self):
         fd = os.open(self._file_path, os.O_RDONLY)
         self._poll.register(fd, select.POLLIN)
@@ -36,15 +49,15 @@ class MIDIPoll:
                 events = self._poll.poll()
                 for event in events:
                     if event[1] & select.POLLIN:
-                        buf.extend(os.read(fd, 8))
-                        try:
-                            message = messages.MessageDecoder.get(buf)
-                        except AssertionError, e:
-                            print "Error while decoding message:", str(e)
-                            print "Complete message data:", ','.join([hex(ord(b)) for b in data])
+                        buf.extend(os.read(fd, 64))
+                        while True:
+                            message = self._decode_message(buf)
+                            if message is None:
+                                break
 
-                        buf = buf[message.LENGTH:]
-                        print "Message:", str(message)
+                            buf = buf[message.LENGTH:]
+                            print "Message:", str(message)
+
             except KeyboardInterrupt:
                 print
                 print "Stopping polling ..."
